@@ -51,7 +51,7 @@ public class HiveHbaseTest {
         Connection con = DriverManager.getConnection("jdbc:hive2://10.1.251.122:10000/hivetest", "hadoop", "hadoop");
         Statement stmt = con.createStatement();
         
-        //创建hive能识别的表，并创建与hbase的关系
+        //创建hive能识别的表，并创建与hbase的关系　:key 默认是statis_month的值
         StringBuilder sb = new StringBuilder(" CREATE TABLE hive_tas_app_age_gprs_20140903(STATIS_MONTH STRING,BUSI_ID STRING,KEY_WORD STRING,SECTION_ID STRING,BRAND_ID STRING,WEB_ADDRESS STRING)              \n");
         sb.append(" STORED BY 'org.apache.hadoop.hive.hbase.HBaseStorageHandler'  \n");
         sb.append(" WITH SERDEPROPERTIES (\"hbase.columns.mapping\"=\":key,cf1:BUSIID,cf1:KEYWORD,cf1:SECTIONID,cf1:BRANDID,cf1:WEBADDRESS\")   \n");
@@ -60,7 +60,7 @@ public class HiveHbaseTest {
         stmt.execute(sb.toString());
         System.out.println("执行创建表结束：SQL="+sb.toString());
         
-        //导入数据
+        //导入数据 tas_app_age_gprs_20140905中key值不能重复
         sb = new StringBuilder("insert overwrite table hive_tas_app_age_gprs_20140903 select STATIS_MONTH,BUSI_ID,KEY_WORD,SECTION_ID,BRAND_ID,WEB_ADDRESS from tas_app_age_gprs_20140905");
         System.out.println("执行导入数据开始：sql="+sb.toString());
         stmt.execute(sb.toString());
