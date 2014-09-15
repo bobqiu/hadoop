@@ -40,6 +40,19 @@ import java.sql.Statement;
  */
 public class HiveTest {
 
+    /**
+     * Description:　创建表： CREATE TABLE page_view( viewTime INT, userid BIGINT,
+     * page_url STRING, referrer_url STRING, ip STRING COMMENT 'IP Address of
+     * the User') COMMENT 'This is the page view table' PARTITIONED BY(dt
+     * STRING, country STRING) ROW FORMAT DELIMITED FIELDS TERMINATED BY '\001'
+     * COLLECTION ITEMS TERMINATED BY '\002' MAP KEYS TERMINATED BY '\003'
+     * STORED AS TEXTFILE;
+     * [ROW FORMAT DELIMITED]关键字，是用来设置创建的表在加载数据的时候，支持的列分隔符。不同列之间用一个'\001'分割,集合(例如array,map)的元素之间以'\002'隔开,map中key和value用'\003'分割。
+[STORED AS file_format]关键字是用来设置加载数据的数据类型,默认是TEXTFILE，如果文件数据是纯文本，就是使用 [STORED AS TEXTFILE]，然后从本地直接拷贝到HDFS上，hive直接可以识别数据。
+     * 
+     * @param args
+     * @throws SQLException
+     */
     public static void main(String[] args) throws SQLException {
         try {
             Class.forName("org.apache.hive.jdbc.HiveDriver");
@@ -56,7 +69,7 @@ public class HiveTest {
         
          sqlDel="DROP TABLE IF EXISTS tas_app_age_gprs_20140905";
         stmt.execute(sqlDel);
-        //创建表
+        //创建表，如果load的是文本文件，则需要stored为textfile,如果需要stored为sequencefile则需要通过textfile转换。
        StringBuilder sb=new StringBuilder("CREATE TABLE IF NOT EXISTS SOURCE_TAS_APP_AGE_GPRS_20140905(");
        sb.append("STATIS_MONTH STRING");
        sb.append(",BUSI_ID STRING");
