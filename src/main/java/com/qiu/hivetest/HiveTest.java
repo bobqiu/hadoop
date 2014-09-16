@@ -74,7 +74,7 @@ public class HiveTest {
        sb.append("STATIS_MONTH STRING");
        sb.append(",BUSI_ID STRING");
        sb.append(",KEY_WORD STRING");
-       sb.append(",SECTION_ID string");
+       sb.append(",SECTION_ID STRING");
        sb.append(",BRAND_ID STRING");
        sb.append(",WEB_ADDRESS STRING");
        sb.append(")");
@@ -104,7 +104,7 @@ public class HiveTest {
        sbTarget.append("STATIS_MONTH STRING");
        sbTarget.append(",BUSI_ID STRING");
        sbTarget.append(",KEY_WORD STRING");
-       sbTarget.append(",SECTION_ID string");
+       sbTarget.append(",SECTION_ID STRING");
        sbTarget.append(",BRAND_ID STRING");
        sbTarget.append(",WEB_ADDRESS STRING");
        sbTarget.append(")");
