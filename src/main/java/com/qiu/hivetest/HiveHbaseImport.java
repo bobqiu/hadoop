@@ -52,12 +52,12 @@ public class HiveHbaseImport {
         Statement stmt = con.createStatement();
         StringBuilder sb= new StringBuilder();
         
-        sb=new StringBuilder("CREATE TABLE test_hbase_20140902(keyss string, value string) PARTITIONED BY(a string) STORED BY 'org.apache.hadoop.hive.hbase.HBaseStorageHandler' WITH SERDEPROPERTIES (\"hbase.columns.mapping\" = \":key,cf1:val\") TBLPROPERTIES (\"hbase.table.name\" = \"aaa_20140902\")");
+       /* sb=new StringBuilder("CREATE TABLE test_hbase_20140402(keyss string, value string) PARTITIONED BY(a string) STORED BY 'org.apache.hadoop.hive.hbase.HBaseStorageHandler' WITH SERDEPROPERTIES (\"hbase.columns.mapping\" = \":key,cf1:val\") TBLPROPERTIES (\"hbase.table.name\" = \"aaa_20140402\")");
         System.out.println("执行创建表开始：SQL="+sb.toString());
         stmt.execute(sb.toString());
-        System.out.println("执行创建表结束：SQL="+sb.toString());
+        System.out.println("执行创建表结束：SQL="+sb.toString());*/
         
-        sb=new StringBuilder(" insert overwrite table test_hbase_20140902 PARTITION(a='1') select '2','2' from tas_app_age_gprs_20140905 limit 10");
+        sb=new StringBuilder(" insert overwrite table test_hbase_20140402 PARTITION(a='1') select '2','2' from tas_app_age_gprs_20140905 limit 10");
         System.out.println("执行导入数据开始：sql="+sb.toString());
         stmt.execute(sb.toString());
         System.out.println("执行导入数据完成");
