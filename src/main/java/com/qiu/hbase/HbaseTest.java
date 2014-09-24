@@ -31,7 +31,7 @@ public class HbaseTest {
     static Configuration conf=null;
     static {
         conf=HBaseConfiguration.create();
-        conf.set("hbase.zookeeper.quorum", "DamHadoop1,DamHadoop2,DamHadoop3");
+        conf.set("hbase.zookeeper.quorum", "DamHadoop1,DamHadoop2,DamHadoop3");//zookeeper服务器地址，要换成自己服务器地址
     }
     //创建表，如果表存在则给出提示
     static void createTable(String tableName,String[] columnFamilys){
