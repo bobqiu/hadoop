@@ -6,17 +6,22 @@
 
 package com.qiu.mptest;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.URI;
 
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FSDataInputStream;
 import org.apache.hadoop.fs.FileStatus;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.FileUtil;
 import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.IOUtils;
 
 /**
  * Title : FileOperation
@@ -214,7 +219,60 @@ public class FileOperation {
             e.printStackTrace();
         }
     }
+    
+    //对文件的内容输入并定位文本中的某一位置
+    static void searchTextFromFile(){
+        FileSystem fs;
+        FSDataInputStream in = null;
 
+        try {
+            Configuration conf=new Configuration();
+             fs = FileSystem.get(conf);
+             in=fs.open(new Path("hdfs://DamHadoop1:9000/user/hadoop"));
+            //将Hadoop的IOUtils工具方法来让这个文件的指定字节复制到标准输出流上
+            IOUtils.copyBytes(in, System.out, 50,false);
+            System.out.println();
+            //展示FSDataInputStream文件输入流的流定位能力，用seek进行定位
+            //把文件输出3次，第一次输入全部内容，第二次输入从第20个字符开始的内容，第3次输出从第40个字符开始的内容
+            for(int i=1;i<=3;i++){
+                in.seek(0+20*(i-1));
+                System.out.println("运行"+i+"次");
+                IOUtils.copyBytes(in, System.out, 4096, false);
+            }
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }finally{
+            IOUtils.closeStream(in);
+        }
+       
+    }
+    //使用FSDataOutputStream来写文件到hdfs系统中，从本地文件系统中复制文件到hdfs文件系统中
+    //使用IOUtils.copy(),复制文件另一种方式fs.copyToLocalFile
+    static void writeToHdfsFromLocal() throws IOException{
+        String localSrc="";
+        String destSrc="";
+        //创建本地文件输入流
+        InputStream in=new BufferedInputStream(new FileInputStream(localSrc));
+        //读取hadoop的配置文件
+        Configuration conf=new Configuration();
+        conf.set("hadoop.job.ugi", "hadoop");
+        //初始化FileSystem
+        FileSystem fs=null;
+        try {
+            fs=FileSystem.get(URI.create(destSrc),conf);
+            OutputStream out=fs.create(new Path(destSrc));
+            //使用IOUtils工具复制本地文件到hdfs目标文件中
+            IOUtils.copyBytes(in, out, 4098, true);
+            System.out.println("OK!");
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }finally{
+            fs.close();
+        }
+        
+    }
     /**
      * Description:
      * 
