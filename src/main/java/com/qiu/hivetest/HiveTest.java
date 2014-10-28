@@ -8,7 +8,6 @@ package com.qiu.hivetest;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -64,13 +63,13 @@ public class HiveTest {
         Connection con = DriverManager.getConnection("jdbc:hive2://10.1.251.122:10000/hivetest", "hadoop", "hadoop");
         Statement stmt = con.createStatement();
         //删除表DROP TABLE [IF EXISTS] table_name
-        String sqlDel="DROP TABLE IF EXISTS SOURCE_TAS_APP_AGE_GPRS_20140905";
+       /* String sqlDel="DROP TABLE IF EXISTS SOURCE_TAS_APP_AGE_GPRS_20140905";
         stmt.execute(sqlDel);
         
          sqlDel="DROP TABLE IF EXISTS tas_app_age_gprs_20140905";
-        stmt.execute(sqlDel);
+        stmt.execute(sqlDel);*/
         //创建表，如果load的是文本文件，则需要stored为textfile,如果需要stored为sequencefile则需要通过textfile转换。
-       StringBuilder sb=new StringBuilder("CREATE TABLE IF NOT EXISTS SOURCE_TAS_APP_AGE_GPRS_20140905(");
+       StringBuilder sb=new StringBuilder("CREATE TABLE IF NOT EXISTS SOURCE_TAS_APP_AGE_GPRS_20141005(");
        sb.append("STATIS_MONTH STRING");
        sb.append(",BUSI_ID STRING");
        sb.append(",KEY_WORD STRING");
@@ -79,7 +78,7 @@ public class HiveTest {
        sb.append(",WEB_ADDRESS STRING");
        sb.append(")");
        sb.append(" comment '用户应用表'");
-       sb.append(" partitioned by (MONTH_ID STRING)");
+       sb.append(" partitioned by (MONTH_ID STRING,BUSIS_ID STRING)");
        sb.append(" row format delimited");
        sb.append(" fields terminated by '\t'");
        //sb.append(" stored as sequencefile");
@@ -91,7 +90,7 @@ public class HiveTest {
 
        //导入数据 load data local inpath '/httplog.txt' into table dq_httplog;
        // sql = "load data inpath '/tmp/testone.txt' into table target_tas_app_age_gprs_20140905" ;
-       sql = "load data inpath '/tmp/testhanseq.txt' into table SOURCE_TAS_APP_AGE_GPRS_20140905 partition(MONTH_ID='20:15:59')" ;
+    /*   sql = "load data inpath '/tmp/testhanseq.txt' into table SOURCE_TAS_APP_AGE_GPRS_20140905 partition(MONTH_ID='20:15:59')" ;
        System.out.println("Running: " + sql);
        stmt.execute(sql);
       
@@ -139,9 +138,9 @@ public class HiveTest {
         while (res.next()) {
           //System.out.println(res.getString(1)+"1\t"+res.getString(2)+"2\t"+res.getString(3)+"3\t"+res.getString(4)+"4\t"+res.getString(5)+"5\t"+res.getString(6));
             System.out.println(res.getString(1)+"\t"+res.getString(2)+"\t"+res.getString(3)+"\t"+res.getString(4)+"\t"+res.getString(5)+"\t"+res.getString(6));
-        }
+        }*/
         //con.commit();
-        res.close();
+       // res.close();
         stmt.close();
         con.close();
     }
