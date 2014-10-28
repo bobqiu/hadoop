@@ -14,7 +14,6 @@ import org.apache.hadoop.hbase.mapreduce.TableMapper;
 import org.apache.hadoop.hbase.mapreduce.TableReducer;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.apache.hadoop.io.IntWritable;
-import org.apache.hadoop.mapred.JobConf;
 import org.apache.hadoop.mapreduce.Job;
 
 
@@ -54,7 +53,8 @@ public class FreqCounter {
     public static void main(String[] args) throws IOException, InterruptedException, ClassNotFoundException {
         Configuration hbaseConf=HBaseConfiguration.create();
         hbaseConf.set("hbase.zookeeper.quorum", "DamHadoop1,DamHadoop2,DamHadoop3");//zookeeper服务器地址，要换成自己服务器地址
-        Job jobConf=new Job(hbaseConf, "FreqCounter");
+        //Job jobConf=new Job(hbaseConf, "FreqCounter");
+        Job jobConf=Job.getInstance(hbaseConf, "FreqCounter");
         jobConf.setJobName("Hbase_FreqCounter");
         jobConf.setJarByClass(FreqCounter.class);
         
