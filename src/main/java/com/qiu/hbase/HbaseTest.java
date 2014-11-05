@@ -1,43 +1,81 @@
 package com.qiu.hbase;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.hbase.Cell;
-import org.apache.hadoop.hbase.CellUtil;
-import org.apache.hadoop.hbase.HBaseConfiguration;
-import org.apache.hadoop.hbase.HColumnDescriptor;
-import org.apache.hadoop.hbase.HTableDescriptor;
-import org.apache.hadoop.hbase.KeyValue;
-import org.apache.hadoop.hbase.MasterNotRunningException;
-import org.apache.hadoop.hbase.TableName;
-import org.apache.hadoop.hbase.ZooKeeperConnectionException;
-import org.apache.hadoop.hbase.client.Delete;
-import org.apache.hadoop.hbase.client.Get;
-import org.apache.hadoop.hbase.client.HBaseAdmin;
-import org.apache.hadoop.hbase.client.HTable;
-import org.apache.hadoop.hbase.client.Put;
-import org.apache.hadoop.hbase.client.Result;
-import org.apache.hadoop.hbase.client.ResultScanner;
-import org.apache.hadoop.hbase.client.Scan;
+import org.apache.hadoop.hbase.*;
+import org.apache.hadoop.hbase.client.*;
 import org.apache.hadoop.hbase.filter.PageFilter;
 import org.apache.hadoop.hbase.filter.PrefixFilter;
 import org.apache.hadoop.hbase.util.Bytes;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class HbaseTest {
+    private  static    final Log log= LogFactory.getLog(HbaseTest.class);
     static Configuration conf=null;
     static {
         conf=HBaseConfiguration.create();
         conf.set("hbase.zookeeper.quorum", "DamHadoop1,DamHadoop2,DamHadoop3");//zookeeper服务器地址，要换成自己服务器地址
+    }
+    //创建命名空间
+    static  void  createNameSpace(String namespace){
+
+         log.debug("创建命名空间:"+namespace);
+        try {
+            HBaseAdmin admin = new HBaseAdmin(conf);
+            if (!checkNamesapceExits(namespace)) { //检查表空间是否存在，存在返回true，不存在返回false
+                admin.createNamespace(NamespaceDescriptor.create(namespace).build());
+            }
+            NamespaceDescriptor[] nds=admin.listNamespaceDescriptors();
+            for (int i=0;i<nds.length;i++) {
+                NamespaceDescriptor nd = nds[i];
+                log.debug("命名表空间列表："+nd.getName());
+            }
+            log.debug("判断一个命名表空间是否存在");
+            admin.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+
+    }
+
+    //检查命名表空间是否存在
+    static boolean checkNamesapceExits(String namespace) {
+        log.debug("检查命名表空间是否存在："+namespace);
+        try {
+            HBaseAdmin admin = new HBaseAdmin(conf);
+            NamespaceDescriptor[] nds=admin.listNamespaceDescriptors();
+            ArrayList list=new ArrayList();
+            for (int i=0;i<nds.length;i++) {
+                list.add(nds[i].getName());
+            }
+            admin.close();
+            if(list.contains(namespace)){
+                return true;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+        return false;
     }
     //创建表，如果表存在则给出提示
     static void createTable(String tableName,String[] columnFamilys){
         try {
             System.out.println("创建表，如果表存在则给出提示"+"start!"+tableName);
             HBaseAdmin admin=new HBaseAdmin(conf);
+            HTableDescriptor[] htds= admin.listTables();
+            System.out.println("所有表名：");
+
+            for(int i =0 ;i<htds.length;i++){
+                HTableDescriptor htd=htds[i];
+                System.out.println("表名："+htd.getTableName());
+                System.out.println(":"+htd.getFamilies());
+            }
             if(admin.tableExists(tableName)){
                System.out.println("表已存在，表名："+tableName); 
             }else{
@@ -143,7 +181,7 @@ public class HbaseTest {
     /**
      * 插入一条数据
      * @param tableName　表名
-     * @param row　行号
+     * @param rowKey　行号
      * @param colFamily　列簇
      * @param column　列
      * @param value　列值
@@ -321,8 +359,10 @@ public class HbaseTest {
         }
     }  
     public static void main(String[] args) throws Exception {
-       createTable("test0922", new String[]{"name","age","address"});
-       deleteRow("test0922", "15");
+        System.out.println(checkNamesapceExits("HbaseTestNs"));
+      // createNameSpace("HbaseTestNs2");
+       createTable("HbaseTestNs:test1105", new String[]{"name","age","address"});  //表名冒号前面表示该表的表空间，HbaseTestNs为表空间名称，test1105为表名。
+       //deleteRow("test0922", "15");
       // deleteRowList("test0922", rows);
       /* List<String[]> rowList=new ArrayList<String[]>();
        rowList.add(new String[]{"test0922","11", "age", "11", "110"});
@@ -335,7 +375,7 @@ public class HbaseTest {
        insertRow("test0922","5","address","city","随州");*/
        
         //getDataByRowId("test0922", "5");
-        listData("test0922");
+       // listData("test0922");
        //listDataByRowkey("test0922", "1"); //模糊查询，能查出多条记录
         //listDataByRowkeyAndLimit("test0922", "1", 4);
         //scanDataByRange("test0922","3","5");//5-3条记录
