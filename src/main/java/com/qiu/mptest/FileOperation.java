@@ -6,22 +6,13 @@
 
 package com.qiu.mptest;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.URI;
-
 import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.fs.FSDataInputStream;
-import org.apache.hadoop.fs.FileStatus;
+import org.apache.hadoop.fs.*;
 import org.apache.hadoop.fs.FileSystem;
-import org.apache.hadoop.fs.FileUtil;
-import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IOUtils;
+
+import java.io.*;
+import java.net.URI;
 
 /**
  * Title : FileOperation
@@ -178,7 +169,7 @@ public class FileOperation {
     //重命名文件夹
     static void renameFile(){
         try {
-            FileSystem fs =FileSystem.get(new Configuration());
+            FileSystem fs = FileSystem.get(new Configuration());
             Path p1=new Path("hdfs://DamHadoop1:9000/user/hadoop/test2.txt");
             Path p2=new Path("hdfs://DamHadoop1:9000/user/hadoop/test1.txt");
             fs.rename(p1, p2);

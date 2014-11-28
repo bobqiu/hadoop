@@ -1,11 +1,10 @@
 
-package com.qiu.hbase;
+package com.qiu.hbase.importbymr;
 
-import java.io.IOException;
-
+import com.sun.org.apache.commons.logging.Log;
+import com.sun.org.apache.commons.logging.LogFactory;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.Cell;
-import org.apache.hadoop.hbase.CellUtil;
 import org.apache.hadoop.hbase.HBaseConfiguration;
 import org.apache.hadoop.hbase.MasterNotRunningException;
 import org.apache.hadoop.hbase.ZooKeeperConnectionException;
@@ -13,9 +12,12 @@ import org.apache.hadoop.hbase.client.HTable;
 import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.client.ResultScanner;
 import org.apache.hadoop.hbase.client.Scan;
-import org.apache.hadoop.hbase.util.Bytes;
+
+import java.io.IOException;
 
 public class PrintUserCount {
+
+    private static final Log log= LogFactory.getLog(PrintUserCount.class);
 
     /**
      * @param args
@@ -33,8 +35,9 @@ public class PrintUserCount {
         ResultScanner rs = hTable.getScanner(scan);
         for (Result r : rs) {
             for (Cell cell : r.rawCells()) {
-                System.out.println("行键："+Bytes.toInt(CellUtil.cloneRow(cell)));
-                System.out.println("簇键："+new String(CellUtil.cloneFamily(cell)));
+               /* log.debug("行键：" + Bytes.toInt(CellUtil.cloneRow(cell)));
+                log.debug("簇键：" + new String(CellUtil.cloneFamily(cell)));*/
+                log.debug("");
             }
         }
         /*Scan scan = new Scan();
@@ -47,7 +50,7 @@ public class PrintUserCount {
             byte[] totalValue = r.getValue(Bytes.toBytes("details"), Bytes.toBytes("total"));
             int count = Bytes.toInt(totalValue);
 
-            System.out.println("key: " + userId+ ",  count: " + count);
+            log.debug("key: " + userId+ ",  count: " + count);
         }
         scanner.close();
         hTable.close();*/

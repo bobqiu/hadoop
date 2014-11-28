@@ -16,7 +16,7 @@ public class App
     public static void main( String[] args ) throws ClassNotFoundException
     {
         Class.forName("org.apache.hive.jdbc.HiveDriver");  
-        try{  
+        try{
                Connection con = DriverManager.getConnection("jdbc:hive2://10.1.251.122:10000/default","hadoop","hadoop");  
                /*PreparedStatement sta = con.prepareStatement("select cast(date as date) from ccp group bycast(date as date)");  
                ResultSet result = sta.executeQuery();  

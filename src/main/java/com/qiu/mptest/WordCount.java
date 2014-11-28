@@ -6,22 +6,14 @@
 
 package com.qiu.mptest;
 
-import java.io.IOException;
-import java.util.Iterator;
-import java.util.StringTokenizer;
-
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
-import org.apache.hadoop.mapred.FileInputFormat;
-import org.apache.hadoop.mapred.FileOutputFormat;
-import org.apache.hadoop.mapred.JobClient;
-import org.apache.hadoop.mapred.JobConf;
-import org.apache.hadoop.mapred.MapReduceBase;
-import org.apache.hadoop.mapred.OutputCollector;
-import org.apache.hadoop.mapred.Reporter;
-import org.apache.hadoop.mapred.TextInputFormat;
-import org.apache.hadoop.mapred.TextOutputFormat;
+import org.apache.hadoop.mapred.*;
+
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.StringTokenizer;
 
 
 /**
@@ -110,10 +102,10 @@ public class WordCount {
         conf.setInputFormat(TextInputFormat.class);
         conf.setOutputFormat(TextOutputFormat.class);
 
-        FileInputFormat.setInputPaths(conf, new Path(input));
+        FileInputFormat.addInputPath(conf, new Path(input));
         FileOutputFormat.setOutputPath(conf, new Path(output));
 
         JobClient.runJob(conf);
         System.exit(0);
-   }
+           }
 }

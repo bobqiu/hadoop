@@ -8,7 +8,6 @@ package com.qiu.hivetest;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -74,11 +73,11 @@ public class HiveHbaseTest {
         //导入数据 tas_app_age_gprs_20140905中key值不能重复 如果重复则会导致只插入一条记录
        //sb = new StringBuilder("INSERT OVERWRITE TABLE hive_tas_app_age_gprs_20140407 PARTITION (MONTHID='2014-08-03') SELECT STATIS_MONTH,BUSI_ID,KEY_WORD,SECTION_ID,BRAND_ID,WEB_ADDRESS FROM tas_app_age_gprs_20140905");
         //sb = new StringBuilder("INSERT OVERWRITE TABLE hive_tas_app_age_gprs_20140407 PARTITION (MONTHID='2014-08-03') SELECT STATIS_MONTH,BUSI_ID,KEY_WORD,SECTION_ID,BRAND_ID,WEB_ADDRESS FROM tas_app_age_gprs_20140905"); 
-        sb = new StringBuilder("INSERT OVERWRITE TABLE hive_tas_app_age_gprs_20140407 PARTITION (MONTHID='2014-08-03') SELECT STATIS_MONTH,BUSI_ID,KEY_WORD,SECTION_ID,BRAND_ID,WEB_ADDRESS FROM tas_app_age_gprs_20140905  limit 500"); 
+       /* sb = new StringBuilder("INSERT OVERWRITE TABLE hive_tas_app_age_gprs_20140407 PARTITION (MONTHID='2014-08-03') SELECT STATIS_MONTH,BUSI_ID,KEY_WORD,SECTION_ID,BRAND_ID,WEB_ADDRESS FROM tas_app_age_gprs_20140905  limit 500");
         //sb=new StringBuilder("load data inpath '/tmp/testhanseq.txt' into table hive_tas_app_age_gprs_20140407 partition(MONTHID='2014-08-04')");　异常：A non-native table cannot be used as target for LOAD
         System.out.println("执行导入数据开始：sql="+sb.toString());
         stmt.execute(sb.toString());
-        System.out.println("执行导入数据完成");
+        System.out.println("执行导入数据完成");*/
         
         //查询hive中的数据　select * 不会通过MP查询,
         /*String sql = "select STATIS_MONTH,BUSI_ID,KEY_WORD,SECTION_ID,BRAND_ID,WEB_ADDRESS from hive_tas_app_age_gprs_20140407" ;

@@ -1,4 +1,4 @@
-package com.qiu.hbase;
+package com.qiu.hbase.importbymr;
 
 import java.io.IOException;
 import java.util.Random;
