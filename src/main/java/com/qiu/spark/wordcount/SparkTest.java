@@ -1,4 +1,4 @@
-package com.qiu.spark;
+package com.qiu.spark.wordcount;
 
 import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
