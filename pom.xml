@@ -14,11 +14,11 @@
             <id>nexus-public</id>
             <url>http://10.1.251.240:8081/nexus/content/groups/public/</url>
         </repository>-->
-        <repository>
+        <!--<repository>
             <id>akka.releases.repo</id>
             <name>Akka repository</name>
             <url>http://repo.akka.io/releases</url>
-        </repository>
+        </repository>-->
     </repositories>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -32,11 +32,11 @@
       <version>3.8.1</version>
       <scope>test</scope>
     </dependency>
-   <!-- <dependency>
+    <dependency>
     	<groupId>org.apache.hive</groupId>
     	<artifactId>hive-jdbc</artifactId>
     	<version>0.13.1</version>
-    </dependency>-->
+    </dependency>
     <dependency>
     	<groupId>org.apache.hadoop</groupId>
     	<artifactId>hadoop-common</artifactId>
@@ -80,6 +80,13 @@
           <artifactId>guava</artifactId>
           <version>14.0</version>
       </dependency>
+
+      <dependency>
+          <groupId>org.apache.curator</groupId>
+          <artifactId>curator-examples</artifactId>
+          <version>2.9.0</version>
+      </dependency>
+
      <!-- <dependency>
           <groupId>org.apache.httpcomponents</groupId>
           <artifactId>httpclient</artifactId>
@@ -91,10 +98,24 @@
           <version>4.3.2</version>
       </dependency>-->
   </dependencies>
-    <build>
+    <!--<build>
         <plugins>
             <plugin>
                 <artifactId>maven-jar-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>-->
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.0.2</version>
+                <configuration>
+                    <archive>
+                        <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+                    </archive>
+                </configuration>
             </plugin>
         </plugins>
     </build>
